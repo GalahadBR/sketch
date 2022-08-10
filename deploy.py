@@ -4,6 +4,8 @@ import psycopg2
 import logging
 import sys
 import argparse
+import pandas as pd
+import pandas.io.sql as psql
 
 # Creating Session With Boto3.
 session = boto3.Session(
@@ -30,6 +32,11 @@ try:
     print("Selecting image paths from table avatars")
     s3_path = cursor.fetchall()
 
+    print("Table Before updating record ")
+    my_table = pd.read_sql('select * from avatars', connection)
+    print(my_table)
+    print("\n")
+
     for row in s3_path:
         copy_source = {
             'Bucket': source_bucket,
@@ -40,11 +47,8 @@ try:
         new_row = row[1].split("/")[0]+"_prod" + "/"+row[1].split("/")[1]
         bucket.copy(copy_source, new_row)
 
-        print("Table Before updating record ")
         sql_select_query = """select * from avatars"""
         cursor.execute(sql_select_query)
-        record = cursor.fetchall()
-        print(record)
 
         # Update single record now
         sql_update_query = """Update avatars set path = %s where path = %s"""
@@ -53,11 +57,10 @@ try:
         count = cursor.rowcount
         print(count, "Record Updated successfully ")
 
-        print("Table After updating record ")
-        sql_select_query = """select * from avatars"""
-        cursor.execute(sql_select_query)
-        record = cursor.fetchall()
-        print(record)
+    print("\nTable After updating record ")
+    my_table = pd.read_sql('select * from avatars', connection)
+    print(my_table)
+    print("\n")
 
 except (Exception, psycopg2.Error) as error:
     print("Error while fetching data from PostgreSQL", error)

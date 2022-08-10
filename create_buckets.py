@@ -3,7 +3,7 @@
 import boto3
 import os
 
-AWS_REGION = 'us-east-2'
+AWS_REGION = "us-east-2"
 
 # Creating Session With Boto3.
 session = boto3.Session(
@@ -13,8 +13,8 @@ session = boto3.Session(
 
 client = boto3.client('s3', region_name=AWS_REGION)
 
-source_bucket_name = 'vini-sketch-legacy-s3'
-destination_bucket_name = 'vini-sketch-prod-s3'
+source_bucket_name = "vini-sketch-legacy-s3"
+destination_bucket_name = "vini-sketch-prod-s3"
 location = {'LocationConstraint': AWS_REGION}
 
 response = client.create_bucket(
