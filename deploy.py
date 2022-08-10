@@ -20,8 +20,8 @@ destination_bucket = 'vini-sketch-prod-s3'
 
 # Connect to db
 try:
-    connection = psycopg2.connect(user="postgres",
-                                  password="mysecretpassword",
+    connection = psycopg2.connect(user=os.getenv('POSTGRESQL_USER'),
+                                  password=os.getenv('POSTGRESQL_PASSWD'),
                                   host="172.17.0.3",
                                   port="5432",
                                   database="proddatabase")
@@ -32,7 +32,7 @@ try:
     print("Selecting image paths from table avatars")
     s3_path = cursor.fetchall()
 
-    print("Table Before updating record ")
+    print("Avatars Table original records ")
     my_table = pd.read_sql('select * from avatars', connection)
     print(my_table)
     print("\n")
@@ -57,10 +57,16 @@ try:
         count = cursor.rowcount
         print(count, "Record Updated successfully ")
 
-    print("\nTable After updating record ")
+    print("\nAvatars Table updated records ")
     my_table = pd.read_sql('select * from avatars', connection)
     print(my_table)
     print("\n")
+
+    s3_destination_list = s3.Bucket(destination_bucket)
+    print('Files copied to the destionation bucket:')
+
+    for obj in s3_destination_list.objects.all():
+        print(f'-- {obj.key}')
 
 except (Exception, psycopg2.Error) as error:
     print("Error while fetching data from PostgreSQL", error)
