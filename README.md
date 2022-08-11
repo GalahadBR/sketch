@@ -89,3 +89,12 @@ python3 s3_copy.py
 ```
 
 The script should show you the list of files copied to the S3, the old and new DataBase entries as well.
+
+## Deleting S3 Buckets
+
+Once you done, don't forget to delete the resources to avoid unwanted billing
+
+```bash
+aws s3 rb s3://vini-sketch-legacy-s3 --force
+aws s3 rb s3://vini-sketch-prod-s3 --force
+```
