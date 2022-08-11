@@ -17,6 +17,8 @@ session = boto3.Session(
 
 client = boto3.client('s3', region_name=AWS_REGION)
 
+# Function to upload files to the source bucket
+
 
 def upload_file(file_name, bucket, object_name=None, args=None):
     if object_name is None:
@@ -26,6 +28,7 @@ def upload_file(file_name, bucket, object_name=None, args=None):
     print(f"'{file_name}' has been uploaded to '{bucket_name}'")
 
 
+# Upload files to the source bucket
 files = glob(f'image/*.png')
 
 for file in files:
