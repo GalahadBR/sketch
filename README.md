@@ -4,13 +4,14 @@ This solution was created using the tools below:
 
 - Python3
 - Python3 Libraries
+- Docker
 - Docker image for postgre
 - AWS s3 bucket
 
 # Installing dependencies
 
-In order to execute the solution, you need to set the environment as follow:
-e.g: This was all set in a Linux Ubuntu Based distro
+In order to execute the solution, you'll need to set the environment as follow:
+NOTE: This was all set in a Linux Ubuntu Based distro
 
 Install the following packages:
 
@@ -59,14 +60,14 @@ export POSTGRES_PASSWORD=mysecretpassword
 export POSTGRES_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sketch)
 
 ```
-Note:
+NOTE:
 I am using the default user postgres but any user with the proper read and write access to the DB should work fine.
 
 ## Create the S3 Buckets
 ```bash
 python3 create_buckets.py
 ```
-Note:
+NOTE:
 I am creating the s3 buckets with the default parameters here but I assume since we are using an API key, it will work as long as the API key used have the proper rights to do that (In this case, admin access).
 
 ## Upload sample images to the S3 bucket
