@@ -32,6 +32,8 @@ sudo apt install postgresql-client-12 python3-pandas python3-psycopg2
 
 ## Setting the environment
 
+NOTE: This environment was already set so the local user would be able to execute any docker command, if this is not your case, make sure to add *sudo* before any docker command from here on.
+
 Download the docker image for postgresql with the command below:
 
 ```bash
@@ -41,17 +43,16 @@ docker pull postgres
 Start the docker container with the commands below:
 
 ```bash
-docker run -d \                                                                                             
-        --name sketch \
-        -e POSTGRES_PASSWORD=mysecretpassword \
-        postgres
+docker run -d --name sketch -e POSTGRES_PASSWORD=mysecretpassword postgres
+```
 
+```bash
 docker start sketch
 ```
 ## Set environment variables
 
 I find it easier when dealing with local labs to use environment variables to help you set it up.
-Set the variables below to help you set up the environment:
+Export the variables below to help you set up the environment:
 
 ```bash
 export AWS_ACCESS_KEY_ID=<YOUR_AWS_ACCES_KEY_ID>
@@ -62,14 +63,14 @@ export POSTGRES_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.I
 
 ```
 NOTE:
-I am using the default user postgres but any user with the proper read and write access to the DB should work fine.
+I am using the default user *postgres* but any user with the proper read and write access to the DB should work fine.
 
 ## Create the S3 Buckets
 ```bash
 python3 create_buckets.py
 ```
 NOTE:
-I am creating the s3 buckets with the default parameters here but I assume since we are using an API key, it will work as long as the API key used have the proper rights to do that (In this case, admin access).
+I am creating the s3 buckets with the default parameters here but I assume since we are using an *API key*, it will work as long as the API key used have the proper rights to do that (In this case, admin access).
 
 ## Upload sample images to the S3 bucket
 ```bash
@@ -97,4 +98,12 @@ Once you done, don't forget to delete the resources to avoid unwanted billing
 ```bash
 aws s3 rb s3://vini-sketch-legacy-s3 --force
 aws s3 rb s3://vini-sketch-prod-s3 --force
+```
+
+## Removing Docker Image and Container
+
+```bash
+docker stop sketch
+docker rm <DOCKER_CONTAINER_ID>
+docker rmi -f postgres
 ```

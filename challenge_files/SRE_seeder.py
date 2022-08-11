@@ -25,7 +25,7 @@ DB_CONN_STRING = os.getenv(
 AVATAR_FILE = os.getenv('AVATAR_FILE', False)
 
 # S3 bucket name to use. It should exist and be accessible to your AWS credentials
-S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME', 's3://vini-sketch-legacy-s3')
+S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME', 'vini-sketch-legacy-s3')
 
 # S3 connection details
 S3_ENDPOINT_URL = os.getenv(
