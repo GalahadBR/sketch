@@ -59,7 +59,7 @@ export POSTGRES_PASSWORD=mysecretpassword
 export POSTGRES_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sketch)
 
 ```
-
+[note^]:
 Note:
 I am using the default user postgres but any user with the proper read and write access to the DB should work fine.
 
