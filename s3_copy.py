@@ -1,11 +1,10 @@
 import boto3
 import os
 import psycopg2
-import logging
+# import logging
 import sys
-import argparse
+# import argparse
 import pandas as pd
-import pandas.io.sql as psql
 
 # Creating Session With Boto3.
 session = boto3.Session(
@@ -20,19 +19,19 @@ destination_bucket = 'vini-sketch-prod-s3'
 
 # Connect to db
 try:
-    connection = psycopg2.connect(user=os.getenv('POSTGRESQL_USER'),
-                                  password=os.getenv('POSTGRESQL_PASSWD'),
-                                  host="172.17.0.3",
+    connection = psycopg2.connect(user=os.getenv('POSTGRES_USER'),
+                                  password=os.getenv('POSTGRES_PASSWORD'),
+                                  host=os.getenv('POSTGRES_HOST'),
                                   port="5432",
                                   database="proddatabase")
     cursor = connection.cursor()
     path_select_Query = "select * from avatars"
 
     cursor.execute(path_select_Query)
-    print("Selecting image paths from table avatars")
+    print("Selecting image paths from table avatars ...")
     s3_path = cursor.fetchall()
 
-    print("Avatars Table original records ")
+    print("Avatars Table original records:")
     my_table = pd.read_sql('select * from avatars', connection)
     print(my_table)
     print("\n")
@@ -44,7 +43,7 @@ try:
         }
 
         bucket = s3.Bucket(destination_bucket)
-        new_row = row[1].split("/")[0]+"_prod" + "/"+row[1].split("/")[1]
+        new_row = 'avatar' + "/"+row[1].split("/")[1]
         bucket.copy(copy_source, new_row)
 
         sql_select_query = """select * from avatars"""
@@ -57,7 +56,7 @@ try:
         count = cursor.rowcount
         print(count, "Record Updated successfully ")
 
-    print("\nAvatars Table updated records ")
+    print("\nAvatars Table updated records:")
     my_table = pd.read_sql('select * from avatars', connection)
     print(my_table)
     print("\n")
