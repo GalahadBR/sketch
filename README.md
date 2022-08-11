@@ -11,6 +11,7 @@ This solution was created using the tools below:
 # Installing dependencies
 
 In order to execute the solution, you'll need to set the environment as follow:
+
 NOTE: This was all set in a Linux Ubuntu Based distro
 
 Install the following packages:
