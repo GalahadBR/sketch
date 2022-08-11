@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS avatars (
+  id SERIAL PRIMARY KEY,
+  path VARCHAR
+);
+INSERT INTO avatars (id, path) VALUES (1, 'image/moises.png');
+INSERT INTO avatars (id, path) VALUES (2, 'image/aint_much.png');
+INSERT INTO avatars (id, path) VALUES (3, 'image/marrapais.png');
